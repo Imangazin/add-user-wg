@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Carousel View of Topics</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+<body>
+<div>
+<label for="username">User id:</label>
+<input type="text" id="username" name="username"><br>
+<label for="role">Role</label> 
+<input type="text" id="role" name="role"><br>
+<input type="submit" value="add" onclick="myFun()"><br>
+<label id="output"></label>
+</div>
+
+<script>
+       var role_array = {
+         "Student": 110,
+         "Instructor": 109
+       };
+       
+       function myFun() {
+          var role_text = document.getElementById("role");
+          var user_name = parseInt(document.getElementById("username"));
+          $.ajax({
+             url: '/d2l/api/lp/1.36/enrollments/',
+             type: 'POST',
+             data: JSON.stringify({
+             "OrgUnitId": 7522,
+             "UserId": 581,
+             "RoleId": 109
+             }),
+             headers: {
+             'X-CSRF-TOKEN': localStorage.getItem("XSRF.Token")
+             },
+             success: function(result){
+               console.log("success");
+               console.log(result);
+               document.getElementById("output").innerHTML = result.responseText;
+             },
+             error: function(error){
+               console.log("Errorrrrrr");
+               console.log(error);
+               document.getElementById("output").innerHTML = error.responseText;
+             }
+          });
+        };
+</script>
+</body>
+</html>
